@@ -7,12 +7,13 @@ import PropTypes from "prop-types";
 import { updateRulesetIndex } from "../../actions/ruleset";
 import { updateState } from "../../actions/app";
 import { createHashHistory } from "history";
+
 class ApplicationContainer extends Component {
   constructor(props) {
     super(props);
     const history = createHashHistory();
     if (!this.props.loggedIn) {
-      history.push("./home");
+      history.push("./ruleset");
     }
   }
 

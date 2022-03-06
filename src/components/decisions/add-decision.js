@@ -368,7 +368,7 @@ class AddDecision extends Component {
   }
 
   fieldPanel() {
-    const { attributes, addAttribute, addPathflag } = this.state;
+    const { attributes, addAttribute } = this.state;
     const attributeOptions = attributes.map(attr => attr.name);
     const attribute =
       addAttribute.name &&
@@ -383,13 +383,6 @@ class AddDecision extends Component {
 
     return (
       <Panel>
-        <div className="attributes-header">
-          <div className="attr-link" onClick={this.addPath}>
-            <span className="plus-icon" />
-            <span className="text">Add Path</span>
-          </div>
-        </div>
-
         <div className="add-field-panel">
           <div>
             <SelectField
@@ -419,21 +412,6 @@ class AddDecision extends Component {
             />
           </div>
         </div>
-
-        {addPathflag && (
-          <div className="add-field-panel half-width">
-            <div>
-              {/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
-                        label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
-              <SelectField
-                options={attributeOptions}
-                onChange={e => this.onChangeNewFact(e, "path")}
-                value={addAttribute.path}
-                label="Path"
-              />
-            </div>
-          </div>
-        )}
 
         <div className="btn-group">
           <Button
@@ -516,16 +494,7 @@ class AddDecision extends Component {
   }
 
   addPanel() {
-    // const { enableTreeView, enableFieldView, enableOutcomeView } = this.state;
-
-    return (
-      <div>
-        {this.topPanel()}
-        {true && this.fieldPanel()}
-        {/* {enableOutcomeView && this.outputPanel()}
-            {enableTreeView && this.treePanel()} */}
-      </div>
-    );
+    return <div>{true && this.fieldPanel()}</div>;
   }
 
   render() {

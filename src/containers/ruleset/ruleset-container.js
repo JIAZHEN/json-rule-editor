@@ -5,23 +5,15 @@ import { connect } from "react-redux";
 import PageTitle from "../../components/title/page-title";
 import Tabs from "../../components/tabs/tabs";
 import Attributes from "../../components/attributes/attributes";
-import Decisions from "../../components/decisions/decision";
-import ValidateRules from "../../components/validate/validate-rules";
+import Rule from "../../components/rules/rule";
 import { handleAttribute } from "../../actions/attributes";
 import { handleDecision } from "../../actions/decisions";
-import Banner from "../../components/panel/banner";
-import * as Message from "../../constants/messages";
 import { groupBy } from "lodash/collection";
 import RuleErrorBoundary from "../../components/error/ruleset-error";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { fetchRuleset } from "../../actions/ruleset";
 
-const tabs = [
-  { name: "Facts" },
-  { name: "Decisions" },
-  { name: "Validate" },
-  { name: "Generate" }
-];
+const tabs = [{ name: "Facts" }, { name: "Rules" }];
 
 class RulesetContainer extends Component {
   constructor(props) {
@@ -82,9 +74,9 @@ class RulesetContainer extends Component {
       outcomes = groupBy(indexedDecisions, data => data.event.type);
     }
 
-    const message = this.props.updatedFlag
-      ? Message.MODIFIED_MSG
-      : Message.NO_CHANGES_MSG;
+    // const message = this.props.updatedFlag
+    //   ? Message.MODIFIED_MSG
+    //   : Message.NO_CHANGES_MSG;
 
     return (
       <div>
@@ -102,22 +94,12 @@ class RulesetContainer extends Component {
                 handleAttribute={this.props.handleAttribute}
               />
             )}
-            {this.state.activeTab === "Decisions" && (
-              <Decisions
+            {this.state.activeTab === "Rules" && (
+              <Rule
                 decisions={indexedDecisions || []}
                 attributes={attributes}
                 handleDecisions={this.props.handleDecisions}
                 outcomes={outcomes}
-              />
-            )}
-            {this.state.activeTab === "Validate" && (
-              <ValidateRules attributes={attributes} decisions={decisions} />
-            )}
-            {this.state.activeTab === "Generate" && (
-              <Banner
-                message={message}
-                ruleset={this.props.ruleset}
-                onConfirm={this.generateFile}
               />
             )}
             {this.state.generateFlag && this.successAlert()}

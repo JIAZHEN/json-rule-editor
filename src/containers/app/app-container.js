@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import { updateRulesetIndex } from "../../actions/ruleset";
 import { updateState } from "../../actions/app";
 import { createHashHistory } from "history";
+import { withAuth0 } from "@auth0/auth0-react";
+import LogoutButton from "../../components/button/logout-button";
 
 class ApplicationContainer extends Component {
   constructor(props) {
@@ -25,9 +27,14 @@ class ApplicationContainer extends Component {
 
   render() {
     const closednav = this.props.navState !== "open";
+    const { user, isAuthenticated } = this.props.auth0;
+
     return (
       <React.Fragment>
-        <Title title={"ETL Rule Editor"} />
+        <div className="header-container">
+          {isAuthenticated && <Title title={user.name} />}
+          {isAuthenticated && <LogoutButton />}
+        </div>
         <NavigationPanel
           closedState={closednav}
           updateState={this.props.updateState}
@@ -48,7 +55,8 @@ ApplicationContainer.defaultProps = {
   navState: undefined,
   activeIndex: 0,
   loggedIn: false,
-  updateState: () => false
+  updateState: () => false,
+  auth0: {}
 };
 
 ApplicationContainer.propTypes = {
@@ -57,7 +65,8 @@ ApplicationContainer.propTypes = {
   navState: PropTypes.string,
   loggedIn: PropTypes.bool,
   updateState: PropTypes.func,
-  activeIndex: PropTypes.number
+  activeIndex: PropTypes.number,
+  auth0: PropTypes.any
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -79,4 +88,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ApplicationContainer);
+)(withAuth0(ApplicationContainer));
